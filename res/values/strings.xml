@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Display</string>
+    <string name="help">In construction.</string>
+    <string-array name="default_menue">
+        <item>zoom x</item>
+        <item>zoom y</item>
+        <item>Xmin = 0</item>
+    </string-array>
+    <string-array name="chart_menue">
+        <item>Line</item>
+        <item>Area</item>
+        <item>Scatter</item>
+        <item>Bubble</item>
+        <item>Bar</item>
+        <item>Stack</item>
+        <item>Pie</item>
+        <item>Dou</item>	/* Doughnut  */
+    </string-array>
+    <string name="main_empty_list">foo</string>
+</resources>

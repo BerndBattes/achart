@@ -1,0 +1,41 @@
+Together with SL4A this Project makes it possible to use a subset of achartengine (charts, graphs) within your own scripts on an android device.
+
+It is tested with android 2.2 and 2.3
+In my installation I use sl4a_r5x (Unofficial Releases)
+
+I want to share the source code and apk-file for those interested in.
+Feel free to use, distribute, change or improve the code.
+
+It is based on Frank Westlakes Display.Listviewer and uses the achartengine-0.7.0 library. Further knowledge comes from different blogs and tutorials in the net like from e.g. Max Aller or Lars Vogel.
+
+On your android device you need to install SL4a and the activity achart .apk.
+In 'Settings' 'Applications' 'Manage applications' you'll find it under the name 'Chart'
+In your script you have to start this activity.
+
+There are 2 example scripts (chartDemo1.py, chartDemo2.py) written in python to demonstrate the use of this activity.
+In the script it needs to be addressed through:
+
+"sl4a.activity.chart"
+"sl4a.activity.chart.ChartActi"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Frank Westlake: 	https://github.com/FrankWestlake/Display
+Lars Vogel:		http://www.vogella.de/android.html
+Max Aller:		http://blog.maxaller.name/2010/05/attaching-a-sticky-headerfooter-to-an-android-listview
+

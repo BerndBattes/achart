@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical">
+		<RelativeLayout android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:id="@+id/top_control_bar">
+
+				<Spinner android:id="@+id/spMenue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="false" android:layout_alignParentRight="true" android:layout_alignParentTop="true" android:entries="@array/default_menue" android:visibility="invisible"></Spinner>
+				<TextView android:text="TextView" android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_centerVertical="true"></TextView>
+				<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:text="&gt;&gt;&gt;" android:id="@+id/butSp"></Button>
+				<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_toLeftOf="@+id/sort_by" android:id="@+id/butPause" android:text="Pause" android:visibility="invisible"></Button>
+
+				<Button
+				    android:id="@+id/butMnu"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:text="&lt;&lt;&lt;" android:layout_toLeftOf="@id/butSp"/>
+
+		</RelativeLayout>
+		<LinearLayout android:id="@+id/bottom_control_bar"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true" android:weightSum="1" android:layout_width="fill_parent">
+			<RelativeLayout android:id="@+id/relativeLayout1" android:layout_height="match_parent" android:layout_width="match_parent">
+				<Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/button1" android:layout_alignParentRight="true" android:text="Select"></Button>
+				<TextView android:id="@+id/textView2" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="TextView"  android:layout_alignParentLeft="true" android:layout_centerVertical="true"></TextView>
+				<Button android:id="@+id/button2" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentTop="true" android:layout_toLeftOf="@+id/button1" android:text="Exit"></Button>
+			</RelativeLayout>
+		</LinearLayout>
+		<ListView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@android:id/list"/>
+		<TextView android:id="@android:id/empty" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="@string/main_empty_list"
+			android:layout_below="@id/top_control_bar" android:layout_above="@id/bottom_control_bar" />
+		<LinearLayout android:id="@+id/chart0" android:layout_below="@id/top_control_bar" android:layout_above="@id/bottom_control_bar"
+		android:layout_weight="1" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"/>
+		<LinearLayout android:id="@+id/chart" android:layout_below="@id/top_control_bar" android:layout_above="@id/bottom_control_bar"
+		android:layout_weight="1" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"/>
+</RelativeLayout>
+
+
