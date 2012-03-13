@@ -1,4 +1,5 @@
 Together with SL4A this Project makes it possible to use a subset of achartengine (charts, graphs) within your own scripts on an android device.
+It consists of an activity (achart.apk) which is addressed by a (your) script.
 
 It is tested with android 2.2 and 2.3
 In my installation I use sl4a_r5x (Unofficial Releases)
