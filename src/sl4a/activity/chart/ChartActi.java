@@ -52,7 +52,10 @@ import android.os.CountDownTimer;
 
 public class ChartActi extends ListActivity {
 	
-	
+	String[]			xListIn=			{""};
+	String[]			xList0In=			{""};
+	String[]			yListIn=			{""};
+	String[]			yList0In=			{""};
 	String[]			xList=				{""};
 	String[]			xList0=				{""};
 	String[]			yList=				{""};
@@ -97,6 +100,7 @@ public class ChartActi extends ListActivity {
 	boolean				spPressed=			false;
 	boolean 			butClc =    		false;
 	boolean				showGrid=			false;
+	boolean				appendData=			false;
 	int					selInd=				0;
 	int					selChart;
 	public 				GraphicalView	 	mChartView;
@@ -105,7 +109,6 @@ public class ChartActi extends ListActivity {
 	long 				xMin, yMin = 		Long.MAX_VALUE;
 	List 				<String[]> 			llegend;
 
-	long				xMin_;
 	boolean[]			selMenueIt;
 	int					nextMenuItem	=0;
 	
@@ -157,6 +160,7 @@ public class ChartActi extends ListActivity {
 			,	"setLegends",			"setAxes"
 			,	"setNoLabels",			"showGrid",				"setPanLimits",			"setZoomLimits"
 			,	"setZoomEnabled",		"setTextTop",			"setTextBot",			"setCountdownTimer"
+			,	"setAppendData"
 			};
 			
 			for(int i=0; i<lvmethods.length; i++)
@@ -169,8 +173,8 @@ public class ChartActi extends ListActivity {
 					case 1:		MENU=		intent.getStringExtra(lvmethods[i]);	haveMenu=true;	break;
 					case 2:		subMenuChar =intent.getStringExtra(lvmethods[i]);					break;
 
-					case 3:		if (intent.getStringExtra(lvmethods[i]) != null) {xList=intent.getStringExtra(lvmethods[i]).split(";");}					break;
-					case 4:		if (intent.getStringExtra(lvmethods[i]) != null) {yList=intent.getStringExtra(lvmethods[i]).split(";"); seriesCnt = yList.length;}		break;
+					case 3:		if (intent.getStringExtra(lvmethods[i]) != null) {xListIn=intent.getStringExtra(lvmethods[i]).split(";");}					break;
+					case 4:		if (intent.getStringExtra(lvmethods[i]) != null) {yListIn=intent.getStringExtra(lvmethods[i]).split(";"); seriesCnt = yListIn.length;}		break;
 					case 5:		if (ChartLayout[0] == "") ChartLayout=intent.getStringExtra(lvmethods[i]).split(listStringSep); 	break;
 					case 6:		LineWidths= intent.getStringExtra(lvmethods[i]).split(listStringSep);	break;
 					case 7:		Colors=intent.getStringExtra(lvmethods[i]).split(listStringSep);		break;
@@ -178,8 +182,8 @@ public class ChartActi extends ListActivity {
 					case 9:		PointSize=Float.valueOf(intent.getStringExtra(lvmethods[i]));  break;
 					case 10:	if (intent.getStringExtra(lvmethods[i]) != null) {bubbleList=intent.getStringExtra(lvmethods[i]).split(";");}				break;
 					
-					case 11:	if (intent.getStringExtra(lvmethods[i]) != null) {xList0=intent.getStringExtra(lvmethods[i]).split(";");}					break;
-					case 12:	if (intent.getStringExtra(lvmethods[i]) != null) {yList0=intent.getStringExtra(lvmethods[i]).split(";"); seriesCnt0 = yList0.length;}		break;
+					case 11:	if (intent.getStringExtra(lvmethods[i]) != null) {xList0In=intent.getStringExtra(lvmethods[i]).split(";");}					break;
+					case 12:	if (intent.getStringExtra(lvmethods[i]) != null) {yList0In=intent.getStringExtra(lvmethods[i]).split(";"); seriesCnt0 = yList0In.length;}		break;
 					case 13:	if (ChartLayout0[0] == "") ChartLayout0=intent.getStringExtra(lvmethods[i]).split(listStringSep); 	break;
 					case 14:	LineWidths0= intent.getStringExtra(lvmethods[i]).split(listStringSep);	break;
 					case 15:	Colors0=intent.getStringExtra(lvmethods[i]).split(listStringSep);		break;
@@ -190,7 +194,8 @@ public class ChartActi extends ListActivity {
 					case 19:	legends=intent.getStringExtra(lvmethods[i]).split(listStringSep);	break;
 					case 20:	axesValsIn=intent.getStringExtra(lvmethods[i]).split(listStringSep);		break;
 					case 21:	if (intent.getStringExtra(lvmethods[i]) != null) {noLabels=intent.getStringExtra(lvmethods[i]).split(listStringSep);}		break;
-					case 22:	showGrid=intent.getBooleanExtra(lvmethods[i],false);	break;
+//					case 22:	showGrid=intent.getBooleanExtra(lvmethods[i],false);	break;
+					case 22:	showGrid = Boolean.valueOf(intent.getStringExtra(lvmethods[i]).toLowerCase());	break;
 					case 23:	if (intent.getStringExtra(lvmethods[i]) != null) {panLimits=intent.getStringExtra(lvmethods[i]).split(listStringSep);}		break;
 					case 24:	if (intent.getStringExtra(lvmethods[i]) != null) {zoomLimits=intent.getStringExtra(lvmethods[i]).split(listStringSep);}		break;
 					case 25:	if (intent.getStringExtra(lvmethods[i]) != null) {zoomEnabledIn=intent.getStringExtra(lvmethods[i]).split(listStringSep);}	break;
@@ -198,6 +203,7 @@ public class ChartActi extends ListActivity {
 					case 26:	textT = intent.getStringExtra(lvmethods[i]);		break;
 					case 27:	textB = intent.getStringExtra(lvmethods[i]);		break;
 					case 28:	setCountDownTimer(intent.getStringExtra(lvmethods[i]));	break;
+					case 29:	appendData = Boolean.valueOf(intent.getStringExtra(lvmethods[i]).toLowerCase());	break;
 					
 				}//switch
 			}//for
@@ -206,20 +212,84 @@ public class ChartActi extends ListActivity {
 			if(textT!=null) {textTop.setText(textT); textTop.setTextSize(18);}
 			if(textB!=null) {textBot.setText(textB); textBot.setTextSize(18);}
 			
+						
+//			Toast.makeText(this, "appendData " +appendData, Toast.LENGTH_SHORT).show();
+			if (appendData){
+				if(yListIn.length > yList.length ){
+					yList = yListIn.clone();
+				}
+				else{
+					if(yListIn[0] != ""){
+						for (int i=0; i<yListIn.length; i++){
+							yList[i] += ", " +yListIn[i];
+						}
+					}
+				}
+				
+				if(yList0In.length > yList0.length ){
+					yList0 = yList0In.clone();
+				}
+				else{
+					if(yList0In[0] != ""){ 
+						for (int i=0; i<yList0In.length; i++){
+							yList0[i] += ", " +yList0In[i];
+						}
+					}
+				}
+				if(xListIn.length > xList.length ){
+					xList = xListIn.clone();
+				}
+				else{
+					if(xListIn[0] != ""){
+						for (int i=0; i<xListIn.length; i++){
+							xList[i] += ", " +xListIn[i];
+						}
+					}
+				}
+				
+				if(xList0In.length > xList0.length ){
+					xList0 = xList0In.clone();
+				}
+				else{
+					if(xList0In[0] != ""){ 
+						for (int i=0; i<xList0In.length; i++){
+							xList0[i] += ", " +xList0In[i];
+						}
+					}
+				}
+			}
+			else{
+				yList = yListIn.clone();
+				yList0 = yList0In.clone();
+				xList = xListIn.clone();
+				xList0 = xList0In.clone();
+			}
+
+			
 			for (int i=0; i<yList0.length; i++){
 				if (yList0[i].startsWith(",")) yList0[i] = yList0[i].replaceFirst(",", " ");
 //				yList0[i] = yList0[i].replace(" ", "");
 				yList0[i] = yList0[i].trim();
-				
 			}
 			for (int i=0; i<yList.length; i++){
-				if (yList[i].startsWith(",")) yList[i] = yList[i].replaceFirst(",", " ");
-//				yList[i] = yList[i].replace(" ", "");				
+				if (yList[i].startsWith(",")) yList[i] = yList[i].replaceFirst(",", " ");		
 				yList[i] = yList[i].trim();
 			}
+			for (int i=0; i<xList0.length; i++){
+				if (xList0[i].startsWith(",")) xList0[i] = xList0[i].replaceFirst(",", " ");
+				xList0[i] = xList0[i].trim();
+			}
+			for (int i=0; i<xList.length; i++){
+				if (xList[i].startsWith(",")) xList[i] = xList[i].replaceFirst(",", " ");
+				xList[i] = xList[i].trim();
+			}
 			
-
-//			Toast.makeText(this, "axes " +axesVals[6], Toast.LENGTH_SHORT).show();
+			
+			try{
+				layout.removeAllViews();		// improves stability for calls of activity in a loop
+			}catch(NullPointerException e){}
+			
+			
 //			UNDERLayer (if activated)
 			if ((yList0.length > 0)&(yList0[0]!="")){
 				makeChart(this, ChartLayout0, xList0, yList0, bubbleList0, Colors0, LineWidths0, PointStyles0,
@@ -231,9 +301,8 @@ public class ChartActi extends ListActivity {
 				makeChart(this, ChartLayout, xList, yList, bubbleList, Colors, LineWidths, PointStyles,
 						PointSize, seriesCnt, R.id.chart);
 			}
-			
-			
-			
+
+		
 	
 			butSel.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
@@ -362,7 +431,6 @@ public class ChartActi extends ListActivity {
 		}
 
 
-		
 //		Menu Zoom    enable / disable zoom
 		selMenueIt = new boolean[mnuZoom.length];
 		for (int i=0; i < mnuZoom.length; i++ ){
@@ -381,11 +449,14 @@ public class ChartActi extends ListActivity {
 		selMenueIt[0] = Boolean.valueOf(zoomEnabled[0].toLowerCase());
 		selMenueIt[1] = Boolean.valueOf(zoomEnabled[1].toLowerCase());
 
-		if (axesVals[5] == "0") selMenueIt[2] = true;
+		if (axesVals[5] == "0") selMenueIt[2] = true;	// yMin = 0
 		else selMenueIt[2] = false;
 		
 		if (axesValsZoom[3] == ""& axesValsZoom[5] == "") axesVals = axesValsIn;
-		else axesVals = axesValsZoom;					  
+		else axesVals = axesValsZoom;	
+		
+		if (selMenueIt[2] == true) axesVals[5] = "0";	// yMin = 0
+		
 		
 //		Menu Chart    which Chart selected
 		if (ChartLayout[0] == "") ChartLayout[0] = "line";
@@ -407,10 +478,6 @@ public class ChartActi extends ListActivity {
 		}
 	
 		
-		xMax = Long.MIN_VALUE;
-		yMax = Long.MIN_VALUE;
-		xMin = Long.MAX_VALUE;
-		yMin = Long.MAX_VALUE;
 //		convert values for use in achartengine
 		x = new ArrayList<double[]>();
 		values = new ArrayList<double[]>();
@@ -512,18 +579,18 @@ public class ChartActi extends ListActivity {
 						if (Colors[0].toLowerCase().contains("gradient")) {
 							int startCol, endCol;
 							try{
-								startCol = Color.parseColor(Colors[2].toLowerCase());
+								startCol = Color.parseColor(Colors[1].toLowerCase());
 							}catch(NullPointerException e){
-								startCol = Color.parseColor(defaultColors[2]);
+								startCol = Color.parseColor(defaultColors[1]);
 							}catch(IndexOutOfBoundsException e){
-								startCol = Color.parseColor(defaultColors[2]);
+								startCol = Color.parseColor(defaultColors[1]);
 							}
 							try{
-								endCol = Color.parseColor(Colors[1].toLowerCase());
+								endCol = Color.parseColor(Colors[2].toLowerCase());
 							}catch(NullPointerException e){
-								endCol = Color.parseColor(defaultColors[1]);
+								endCol = Color.parseColor(defaultColors[2]);
 							}catch(IndexOutOfBoundsException e){
-								endCol = Color.parseColor(defaultColors[1]);
+								endCol = Color.parseColor(defaultColors[2]);
 							}
 							int noCol = Colors.length;
 							int noExtraCol = noCol - 3;			// with gradient, every color behind endColor (Colors[2]) is ExtraCol 
@@ -554,7 +621,6 @@ public class ChartActi extends ListActivity {
 						}
 					}catch(NullPointerException e){
 					}catch(IndexOutOfBoundsException e){}
-			
 					
 					if (axesVals[3].toLowerCase().contains("none")| axesVals[3].contains("\"\"")) axesVals[3] = String.valueOf(xMin-xMin/10);
 				    if (axesVals[4].toLowerCase().contains("none")| axesVals[4].contains("\"\"")) axesVals[4] = String.valueOf(xMax+xMax/10);
@@ -844,6 +910,23 @@ public class ChartActi extends ListActivity {
 						legend.add(lValues);
 					}
 					
+					colors = new int[yVals[0].length];
+					for (int i = 0; i < yVals[0].length ; i++) {
+						try{
+							colors[i] = Color.parseColor(Colors[i].toLowerCase());
+						}catch(NullPointerException e){
+							int c= i % defaultColors.length;
+							colors[i] = Color.parseColor(defaultColors[c]);
+						}catch(IndexOutOfBoundsException e){
+							int c= i % defaultColors.length;
+							colors[i] = Color.parseColor(defaultColors[c]);
+						}catch(IllegalArgumentException e){                // unknown Color
+							int c= i % defaultColors.length;
+							colors[i] = Color.parseColor(defaultColors[c]);
+						}
+						
+					}	
+					
 					defrenderer = ChartUtil.buildCategoryRenderer(colors);
 					try{
 						defrenderer.setZoomEnabled(Boolean.valueOf(zoomEnabled[1].toLowerCase()));
@@ -865,6 +948,7 @@ public class ChartActi extends ListActivity {
 		} // if  ((values.get(0)[0] != 0.0)& (values.size() > 1)){
 	
 //		Toast.makeText(ChartActi.this, "mChartView " + mChartView , Toast.LENGTH_LONG).show();
+
 		layout.addView(mChartView, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 
 	    mChartView.setOnClickListener(new View.OnClickListener() {
@@ -937,7 +1021,7 @@ public class ChartActi extends ListActivity {
                     		zoomEnabledZoom[1] = "False";
                     	}
                     		
-                    	if (selMenueIt[2]){					// X - scale starts with 0
+                    	if (selMenueIt[2]){					// Y - scale starts with 0
                     		panLimits[2] = "-2";
                     		axesVals[5] = "0";
                     	}
@@ -1076,9 +1160,9 @@ public class ChartActi extends ListActivity {
 		{
 			switch(i)
 			{	
-				case 0:	countdown=		Long.decode(args[i])*1000;	break;
+				case 0:	countdown=		Math.round(Double.valueOf(args[i])*1000);	break;
 				case 1:	exitcode=		Integer.decode(args[i]);	break;
-				case 2:	noticetime=		Long.decode(args[i])*1000;	break;
+				case 2:	noticetime=		Math.round(Double.valueOf(args[i])*1000);	break;
 				case 3:	noticemethod=	Integer.decode(args[i]);	break;
 				case 4:	message=		args[i];					break;
 				default: Toast.makeText(this, "countDownTimer:\nExtra parameter: "+args[i], Toast.LENGTH_LONG).show();
@@ -1087,14 +1171,17 @@ public class ChartActi extends ListActivity {
 		final int		noticeMethod=	noticemethod;
 		final long		noticeTime=		noticetime==0?countdown:noticetime;
 		final int		exitCode=		exitcode;
-		final String	Message=		message!=null?message:"countDownTimer: %s second%s";
+		final String	Message=		message!=null?message:"countDownTimer: %s msecond%s";
 		
 		cdTimer =new CountDownTimer(countdown, noticeTime)
 		{
 			public void onTick(long millisUntilFinished)
 			{
-				long	seconds=millisUntilFinished/1000;
-				String	notice=String.format(Message, seconds+"", (seconds==1?"":"s"));
+//				long	seconds=millisUntilFinished/1000;
+//				String	notice=String.format(Message, seconds+"", (seconds==1?"":"s"));
+				long	mseconds=millisUntilFinished;
+				String	notice=String.format(Message, mseconds+"", (mseconds==1?"":"s"));
+				
 				switch(noticeMethod)
 				{
 					default:

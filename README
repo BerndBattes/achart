@@ -7,22 +7,26 @@ In my installation I use sl4a_r5x (Unofficial Releases)
 I want to share the source code and apk-file for those interested in.
 Feel free to use, distribute, change or improve the code.
 
-It is based on Frank Westlakes Display.Listviewer and uses the achartengine-0.7.0 library. Further knowledge comes from different blogs and tutorials in the net like from e.g. Max Aller or Lars Vogel.
+It is based on Frank Westlakes Display.Listviewer and uses the achartengine-0.7.0 library.
+Further knowledge comes from different blogs and tutorials in the net like from e.g. Max Aller or Lars Vogel.
 
 On your android device you need to install SL4a and the activity achart .apk.
 In 'Settings' 'Applications' 'Manage applications' you'll find it under the name 'Chart'
 In your script you have to start this activity.
 
-There are 2 example scripts (chartDemo1.py, chartDemo2.py) written in python to demonstrate the use of this activity.
+There are several example scripts (chartDemo1.py, chartDemo2.py ...) written in python to demonstrate the use of this activity.
 In the script it needs to be addressed through:
 
 "sl4a.activity.chart"
 "sl4a.activity.chart.ChartActi"
 
 
-
-
-
+Version 2
+- new feature:	append data
+- activity now accepts numbers < 1 (floating point) for repetition rate (setCountdownTimer)
+- showGrid works now
+- issue in chartLayout 'doughnut' resolved
+- general stability improved when called in a loop
 
 
 

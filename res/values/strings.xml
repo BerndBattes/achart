@@ -5,7 +5,7 @@
     <string-array name="default_menue">
         <item>zoom x</item>
         <item>zoom y</item>
-        <item>Xmin = 0</item>
+        <item>Ymin = 0</item>
     </string-array>
     <string-array name="chart_menue">
         <item>Line</item>
